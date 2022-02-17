@@ -1,0 +1,25 @@
+body {
+  display: flex;
+  gap: 30px;
+}
+
+#dashboard {
+  flex: none;
+  width: 300px;
+  background-color: rgb(253, 167, 167);
+}
+
+#grid {
+  flex: none;
+  margin: 0;
+  height:800px;
+  width: 800px;
+  line-height: 0;
+}
+
+.cell {
+  display: inline-block;
+  box-sizing: border-box;
+  margin: 0;
+  border: 0.5px solid #dbdbdb;
+}

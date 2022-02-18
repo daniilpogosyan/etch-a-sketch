@@ -6,9 +6,9 @@ const pickedColor = document.getElementById('color');
 gridSize.addEventListener('change', (e)=>{
   destroyGrid();
   if (e.target.value < e.target.min) {
-    e.target.value = 1;
-  } else if (e.target.value > e.target.max) {
-    e.target.value = 50;
+    e.target.value = '1';
+  } else if (+e.target.value > +e.target.max) {
+    e.target.value = '50';
   }
   createGrid(e.target.value);
 });
@@ -43,6 +43,5 @@ function createCell(cellSize) {
 
 function paintCellRand(e) {
   let color = '#' + Math.floor((16**6*Math.random())).toString(16);
-  console.log(color);
   e.target.style.backgroundColor = color;
 }

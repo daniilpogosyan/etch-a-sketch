@@ -2,6 +2,7 @@ const grid = document.getElementById('grid');
 
 const gridSize = document.getElementById('grid-size');
 const pickedColor = document.getElementById('color');
+const rainbowMode = document.getElementById('rainbow-mode');
 
 gridSize.addEventListener('change', (e)=>{
   destroyGrid();
@@ -26,7 +27,7 @@ function createGrid(cellPerSide) {
   for (i = 0; i < cellPerSide; i++) {
     for (j = 0; j < cellPerSide; j++) {
       cell = createCell(cellSize);
-      cell.addEventListener('mouseover',paintCellRand)
+      cell.addEventListener('mouseover',paintCell);
       grid.appendChild(cell);
     }
   }
@@ -41,7 +42,12 @@ function createCell(cellSize) {
   return cell;
 }
 
-function paintCellRand(e) {
-  let color = '#' + Math.floor((16**6*Math.random())).toString(16);
+function paintCell(e) {
+  let color;
+  if(rainbowMode.checked) {
+    color = '#' + Math.floor((16**6*Math.random())).toString(16);
+  } else {
+    color = pickedColor.value;
+  }
   e.target.style.backgroundColor = color;
 }

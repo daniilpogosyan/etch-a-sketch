@@ -2,7 +2,6 @@ const grid = document.getElementById('grid');
 
 const gridSize = document.getElementById('grid-size');
 const pickedColor = document.getElementById('color');
-const rainbowMode = document.getElementById('rainbow-mode');
 
 gridSize.addEventListener('change', (e)=>{
   destroyGrid();
@@ -28,6 +27,7 @@ function createGrid(cellPerSide) {
     for (j = 0; j < cellPerSide; j++) {
       cell = createCell(cellSize);
       cell.addEventListener('mouseover',paintCell);
+      cell.style.backgroundColor = '#ffffff';
       grid.appendChild(cell);
     }
   }
@@ -43,11 +43,35 @@ function createCell(cellSize) {
 }
 
 function paintCell(e) {
-  let color;
-  if(rainbowMode.checked) {
-    color = '#' + Math.floor((16**6*Math.random())).toString(16);
-  } else {
-    color = pickedColor.value;
+  getColor = e => {
+    mode = document.querySelector('input[name="mode"]:checked');
+    console.info(mode.id);
+    switch (mode.id) {
+      case 'default-mode':
+        return pickedColor.value;
+      case 'watercolor-mode':
+        let cellRGB = e.target.style.backgroundColor;
+        cellColors = [...cellRGB.matchAll(/\d+/g)];
+      
+        let newStrokeHex = pickedColor.value;
+        let strokeRedCh = parseInt(newStrokeHex.slice(1,3),16);
+        let strokeGreenCh = parseInt(newStrokeHex.slice(3,5),16);
+        let strokeBlueCh = parseInt(newStrokeHex.slice(5),16);
+      
+        let strokePart = 0.2;
+        let newRedCh = Math.floor(cellColors[0] * (1 - strokePart) + strokeRedCh * strokePart);
+        let newGreenCh = Math.floor(cellColors[1] * (1 - strokePart) + strokeGreenCh * strokePart);
+        let newBlueCh = Math.floor(cellColors[2] * (1 - strokePart) + strokeBlueCh * strokePart);
+
+        let newColor = `rgb(${newRedCh}, ${newGreenCh}, ${newBlueCh})`;
+        e.target.style.backgroundColor = newColor;
+        return newColor;
+   
+      case 'rainbow-mode':
+        return `rgb(${Math.round(Math.random()*255)}, ${Math.round(Math.random()*255)}, ${Math.round(Math.random()*255)})`;
+      default:
+        console.log('none of modes');
+    }
   }
-  e.target.style.backgroundColor = color;
+  e.target.style.backgroundColor = getColor(e);
 }
